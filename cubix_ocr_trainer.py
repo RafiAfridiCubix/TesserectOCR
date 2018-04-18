@@ -2,7 +2,6 @@
 # Name: Cubix.co
 # Version: 1.0
 # Summary: Used to train your own custom Tesserect OCR
-# Home-page: https://github.com/pypa/setuptools
 # Author: Rafi Ullah
 # Author-email: rafiullah.khan@cubixlabs.com
 # License: Cubix Code OpenSource (C20)
