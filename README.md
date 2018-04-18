@@ -5,8 +5,8 @@ This project is to contribute to applications of tesserect OCR
 1) You have to create a directory where you have all tif files
 2) Now run makeBox method by applying tif images directory
 
-----> if you have single tif image, use format language.fontStyle.tif, i-e eng.arial.tif
-----> if you have multiple tif images use format language.fontStyle.Num.tif, i-e eng.arial.1.tif, eng.arial.2.tif
+###### if you have single tif image, use format language.fontStyle.tif, i-e eng.arial.tif
+###### if you have multiple tif images use format language.fontStyle.Num.tif, i-e eng.arial.1.tif, eng.arial.2.tif
 
 ###### You can also make box files manually using https://pp19dd.com/tesseract-ocr-chopper/?i=ocrdMTGbD
 
