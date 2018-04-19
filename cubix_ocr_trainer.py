@@ -1,4 +1,3 @@
-
 # Name: Cubix.co
 # Version: 1.0
 # Summary: Used to train your own custom Tesserect OCR
@@ -11,7 +10,7 @@ class CubixTOCR:
 
     # this is used to train you own custom ocr, You have to provide tiff images and box files
     # you must provide font_properties file
-    def makeData(self, folderPath, createBox=True):
+    def makeData(self, folderPath, createBox=True, language='eng'):
         '''
         :param folderPath: path where you have tiff files and box files
         :param createBox: if this is true box will also be created
@@ -34,28 +33,25 @@ class CubixTOCR:
             if tif_file.split(".")[-1] in ["tif"]:
                 try:
                     print("processing tiff file "+str(tif_file))
-                    box_file = tif_file.split(".")[0] + "." + tif_file.split(".")[1] + ".box"
-                    components = box_file.split(".")
-                    lang = components[0]
-                    font = components[1]
                     if createBox == True:
-                        os.system("tesseract " + tif_file + " " + lang +"."+font+".box nobatch box.train")
+                        filename = tif_file[:-4]
+                        os.system("tesseract " + tif_file + " " +filename+".box nobatch box.train")
                 except Exception as e:
                     print("your data may not be properly created :" + str(e))
 
-        os.system("unicharset_extractor "+lang+"*.box")
-        os.system("mftraining -F font_properties -U unicharset " + lang + "*.tr")
-        os.system("cntraining " + lang + "*.tr")
+        os.system("unicharset_extractor "+language+"*.box")
+        os.system("mftraining -F font_properties -U unicharset " +language+"*.tr")
+        os.system("cntraining "+language+"*.tr")
 
-        # Remove unnecessory files from directory
-        os.rename('inttemp', lang + '.inttemp')
-        os.rename('shapetable', lang + '.shapetable')
-        os.rename('normproto', lang + '.normproto')
-        os.rename('pffmtable', lang + '.pffmtable')
-        os.rename('unicharset', lang + '.unicharset')
-        os.system("combine_tessdata " + lang + '.')
+        # Rename files from directory
+        os.rename('inttemp', language + '.inttemp')
+        os.rename('shapetable', language + '.shapetable')
+        os.rename('normproto', language + '.normproto')
+        os.rename('pffmtable', language + '.pffmtable')
+        os.rename('unicharset', language + '.unicharset')
+        os.system("combine_tessdata " + language + '.')
 
-        print("copy your " + lang + ".traineddata to tesserect-ocr folder")
+        print("copy your " + language + ".traineddata to tesserect-ocr folder")
         print("directory can be found at usr/share/tesserect-ocr/tessdata")
 
         #delete all unnessary files
@@ -70,8 +66,20 @@ class CubixTOCR:
         :param tiff_folder: path of tiff images
         :return:
         '''
+
+        if str(tiff_folder) == "":
+            print("---> Must provide training images folder path <----")
+            print("---> /home/cubix/projects/trainingData/ <----")
+        elif str(tiff_folder)[-1] == "/":
+            folderPath = tiff_folder
+        else:
+            tiff_folder == tiff_folder+"/"
+
         for tif_file in os.listdir(tiff_folder):
             if tif_file.split(".")[-1] in ["tif"]:
-                lang = tif_file.split(".")[0]
-                os.system("tesseract " + tif_file + " " + lang + ".box nobatch box.train")
+                filename = tif_file[:-4]
+                os.system("tesseract " + tif_file + " " + filename + ".box nobatch box.train")
         print("boxes for each tiff image created, you can update those files....")
+
+# cu = CubixTOCR()
+# cu.makeBox("/home/rafiullah/PycharmProjects/teeserect_ocr/")
